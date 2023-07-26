@@ -2,21 +2,38 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="pull-left">
-                <h2>Laravel 8 CRUD Example</h2>
+                <h2>Laravel CRUD Assignment</h2>
             </div>
             <div class="pull-right">
                 <a class="btn btn-success" href="<?php echo e(route('products.create')); ?>"> Create New Product</a>
             </div>
             <div class="pull-right">
-                <a class="btn btn-success" style="margin-right:5px" href="<?php echo e(route('login')); ?>"> Log out</a>
+                <a class="btn btn-success" style="margin-right:5px" href="<?php echo e(route('logout')); ?>"> Log out</a>
             </div>
         </div>
     </div>
 
-    <?php if($message = Session::get('success')): ?>
-        <div class="alert alert-success">
-            <p><?php echo e($message); ?></p>
-        </div>
+    <?php if($product = Session::get('success')): ?>
+    <div class="alert alert-success" id="alertDiv" role="alert" >
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong><?php echo e($product); ?></strong> is Created as a product!
+    </div>
+    <?php endif; ?>
+
+    <?php if($name = Session::get('updated')): ?>
+    <div class="alert alert-primary" id="alertDiv" role="alert" >
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        The Product is updated to <strong> <?php echo e($name); ?></strong>
+    </div>
+    <?php endif; ?>
+
+    <?php if($product = Session::get('danger')): ?>
+    
+    <div class="alert alert-danger" id="alertDiv" role="alert" >
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong><?php echo e($product->name); ?></strong> has been deleted!
+    </div>
+
     <?php endif; ?>
 
     <table class="table table-bordered">

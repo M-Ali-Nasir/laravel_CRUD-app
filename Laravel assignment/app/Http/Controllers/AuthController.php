@@ -10,17 +10,19 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-$logedin = false;
+
 
 class AuthController extends Controller
 {
     public function showLoginForm()
     {
+        
         return view('products.login');
     }
 
     public function login(Request $request)
     {
+        $logedin = false;
         // Validate the form data
         $request->validate([
             'email' => 'required|email',
@@ -32,13 +34,15 @@ class AuthController extends Controller
         $password = $request->input('password');
 
         // Your authentication logic using $email and $password goes here
-        $logedin=false;
+        
         if (($email == 'abcd@example.com') && ($password == 'abcd')) {
             // Authentication successful, redirect to the index route.
             $logedin=true;
+            session(['key' => $logedin]);
             return redirect()->route('products.index');
         } else {
             // Authentication failed, redirect back to the login form with an error message.
+            session(['key' => $logedin]);
             return redirect()->route('login')->with('error', 'Invalid credentials');
         }
 
@@ -52,5 +56,12 @@ class AuthController extends Controller
             // Authentication failed, redirect back to the login form with an error message.
             return redirect()->route('login')->with('error', 'Invalid credentials');
         }*/
+    }
+
+    public function logout(){
+        $logedin = false;
+
+        session(['key' => $logedin]);
+            return redirect()->route('login')->with('error', 'Invalid credentials');
     }
 }

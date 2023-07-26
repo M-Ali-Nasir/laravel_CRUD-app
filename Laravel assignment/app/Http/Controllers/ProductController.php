@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 // app/Http/Controllers/AuthController.php
 
 include 'AuthController.php';
@@ -19,11 +20,21 @@ class ProductController extends Controller
 
 
     public function index(){
+        if(session('key')){
+            $logedin = session('key') ;
+        }else{
+            $logedin = false;
+        }
+            
         
+        if($logedin){
         $products = Product::latest()->paginate(5);
         return view('products.index',compact('products'))
             ->with(request()->input('page'));
-
+        }
+        else{
+            return redirect()->route('login')->with('error', 'Please Login first to open admin page');
+        }
 }
 
     /**
@@ -52,7 +63,7 @@ class ProductController extends Controller
         Product::create($request->all());
 
         return redirect()->route('products.index')
-                        ->with('success','Product created successfully.');
+                        ->with('success', $request->name);
     }
 
     /**
@@ -88,7 +99,8 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Product $product)
-    {
+    {   
+
         $request->validate([
             'name' => 'required',
             'detail' => 'required',
@@ -97,7 +109,7 @@ class ProductController extends Controller
         $product->update($request->all());
 
         return redirect()->route('products.index')
-                        ->with('success','Product updated successfully');
+                        ->with('updated', $request->name);
     }
 
     /**
@@ -108,9 +120,11 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
+        
+        $name = $product->name;
         $product->delete();
 
         return redirect()->route('products.index')
-                        ->with('success','Product deleted successfully');
+                        ->with('danger', $product);
     }
 }

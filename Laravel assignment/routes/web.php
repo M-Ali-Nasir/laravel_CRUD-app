@@ -24,6 +24,8 @@ Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 // Handle login form submission
 Route::post('/login', [AuthController::class, 'login']);
 
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+
 // Index route, you can replace 'index' with the actual name of your index route
 Route::get('/index', function () {
     // Add your logic for the index page here.

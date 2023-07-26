@@ -5,8 +5,8 @@
 <?php $__env->startSection('content'); ?>
 <div class="row">
     <div class="col-lg-12 margin-tb">
-       
-    </div>
+    <h2>Login</h2>
+    
 </div>
 <h2>Login</h2>
     <?php if(session('error')): ?>

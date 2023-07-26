@@ -23,10 +23,10 @@ class UserFactory extends Factory
     public function definition()
     {
         return [
-            'name' => 'test user',
-            'email' => 'abcd@gmail.com',
+            'name' => '',
+            'email' => '',
             'email_verified_at' => now(),
-            'password' => 'abcd', // password
+            'password' => '', // password
             'remember_token' => Str::random(10),
         ];
     }

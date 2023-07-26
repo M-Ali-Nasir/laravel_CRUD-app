@@ -9,6 +9,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 
 
@@ -20,7 +21,7 @@ class AuthController extends Controller
         return view('products.login');
     }
 
-    public function login(Request $request)
+    public function login(Request $request,)
     {
         $logedin = false;
         // Validate the form data
@@ -32,16 +33,37 @@ class AuthController extends Controller
         // Access the email and password submitted from the form
         $email = $request->input('email');
         $password = $request->input('password');
+        
 
+        // access users form user table
+        $users = User::all();
+        $yes = false;
+
+        // Check if user is present or not
+
+        foreach ($users as $user){
+            if($user->email == $email){
+                if($user->password == $password){
+                    $yes=true;
+                    break;
+                }
+            }
+        }
+
+        
+       // $adminEmail = $user->email;
+       // $adminpswd = $user->password;
         // Your authentication logic using $email and $password goes here
         
-        if (($email == 'abcd@example.com') && ($password == 'abcd')) {
+        //if (($email == $adminEmail) && ($password == $adminpswd)) {
+            if ($yes==true) {
             // Authentication successful, redirect to the index route.
             $logedin=true;
             session(['key' => $logedin]);
             return redirect()->route('products.index');
-        } else {
+        } elseif($yes==false) {
             // Authentication failed, redirect back to the login form with an error message.
+            $logedin=false;
             session(['key' => $logedin]);
             return redirect()->route('login')->with('error', 'Invalid credentials');
         }
@@ -62,6 +84,6 @@ class AuthController extends Controller
         $logedin = false;
 
         session(['key' => $logedin]);
-            return redirect()->route('login')->with('error', 'Invalid credentials');
+            return redirect()->route('login')->with('error', 'Loged out');
     }
 }
